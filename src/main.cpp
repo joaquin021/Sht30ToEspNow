@@ -25,8 +25,8 @@ void buildHumidityRequest(request *request) {
 }
 
 void buildBatteryRequest(request *request) {
-    char batteryVoltage[5];
-    dtostrf(ESP.getVcc() / 1000.0, 4, 3, batteryVoltage);
+    char batteryVoltage[4];
+    itoa(ESP.getVcc(), batteryVoltage, 10);
     char batteryLevel[5];
     itoa(map(ESP.getVcc(), 2200, 3200, 0, 100), batteryLevel, 10);
     requestUtils.buildSendOperation(request, batteryVoltage, "batteryVol");
