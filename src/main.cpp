@@ -33,28 +33,22 @@ void buildBatteryRequest(request *request) {
     requestUtils.buildSendOperation(request, batteryLevel, "batteryLev");
 }
 
-void sendRequest(request *request) {
-    uint8_t serializedBuffer[ESPNOW_BUFFERSIZE];
-    int serializedLen = requestUtils.serialize(serializedBuffer, request);
-    espNowService.send(gatewayAddress, serializedBuffer, serializedLen);
-}
-
 void setup() {
     Serial.begin(115200);
-    debugln();
+    logDebugln("");
     setupWiFiForEspNow();
     espNowService.setup(espNowSendCallBackDummy, espNowRecvCallBackDummy);
 }
 
 void loop() {
     if (sht30.get() == 0) {
-        request request = requestUtils.createRequest(clientName, clientAdress, ESP.getChipId());
+        request request = requestUtils.createRequest(clientName, clientAdress, gatewayAddress, ESP.getChipId());
         buildTemperatureRequest(&request);
         buildHumidityRequest(&request);
         buildBatteryRequest(&request);
-        sendRequest(&request);
+        espNowService.sendRequest(&request);
     } else {
-        debugln("Error getting sht30 sensor");
+        logErrorln("Error getting sht30 sensor");
     }
     ESP.deepSleep(900000000);
 }
