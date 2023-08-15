@@ -1,0 +1,10 @@
+#ifndef __SECRETS_H
+#define __SECRETS_H
+
+#include <Arduino.h>
+
+const char* clientName = "XXX";
+uint8_t gatewayAddress[] = {0x11, 0x11, 0x11, 0x11, 0x11, 0x11};
+uint8_t clientAdress[] = {0x22, 0x22, 0x22, 0x22, 0x22, 0x22};
+
+#endif
